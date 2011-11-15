@@ -1,0 +1,54 @@
+# use glob syntax.
+syntax: glob
+*.ser
+*.class
+*~
+*.bak
+*.off
+*.old
+.DS_Store
+*.lock
+
+# logs
+*.log
+derby.log
+
+# eclipse conf file
+.settings
+.classpath
+.project
+.manager
+
+# building
+target
+null
+tmp*
+dist
+test-output
+
+# database
+database
+.db
+
+# other scm
+.svn
+.CVS
+.hg*
+
+# switch to regexp syntax.
+# syntax: regexp
+# ^\.pc/
+
+# IntelliJ
+*.iml
+*.ipr
+*.iws
+.idea
+
+# Pax Runner (for easy OSGi launching)
+runner
+
+stax-web.xml
+stax.txt
+*.jar
+*_managed/*
