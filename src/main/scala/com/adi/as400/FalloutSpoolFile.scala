@@ -13,9 +13,6 @@ import com.adi.util.SendReport
  * Time: 4:03 PM
  */
 
-
-/* TODO Implement Load Pattern for Resources */
-
 /**
  * container for pages of a spool file
  */

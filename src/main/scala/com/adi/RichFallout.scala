@@ -19,7 +19,7 @@ object RichFallout {
   val usage = """ Usage: [--server address] [--user user] [--password password]
   [--smtpserver address] [--outq outq] [--spoolfileuser user that created spoolfile [--userdata spoolfile user data
   [--email comma seperated email address list] [--bcc ture|false - blind carbon copy for QC] [--markasprocessed:
-  true|false - place spool file on hold and change userdata to SENTASPDF """"
+  true|false - place spool file on hold and change userdata to SENTASPDF """
 
   def nextOption(parsedArguments: OptionMap, remainingArguments: List[String]): OptionMap = {
     remainingArguments match {
@@ -44,10 +44,7 @@ object RichFallout {
   }
 
   def main(args: Array[String]) = {
-    if (args.length < 1) {
-      println(usage)
-      sys.exit(1)
-    }
+   println(usage)
 
     // Load command line arguments
     val options = nextOption(Map(), args.toList)
