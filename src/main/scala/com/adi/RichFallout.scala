@@ -52,7 +52,7 @@ object RichFallout {
     val server = options.getOrElse(Symbol("server"), "localhost").asInstanceOf[String]
     val user = options.getOrElse(Symbol("user"), "").asInstanceOf[String]
     val password = options.getOrElse(Symbol("password"), "").asInstanceOf[String]
-    val smtpServer = options.getOrElse(Symbol("smtpserver"), "10.100.200.14").asInstanceOf[String]
+    val smtpServer = options.getOrElse(Symbol("smtpserver"), "mail.snan.twtelecom.net").asInstanceOf[String]
     val outq = options.getOrElse(Symbol("outq"), "qprint").asInstanceOf[String]
     val spoolfileUser = options.getOrElse(Symbol("spoolfileuser"), "T2FALLOUT").asInstanceOf[String]
     val userdata = options.getOrElse(Symbol("userdata"), "TM4362CR").asInstanceOf[String]

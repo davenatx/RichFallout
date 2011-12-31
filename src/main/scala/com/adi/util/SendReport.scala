@@ -17,14 +17,20 @@ class SendReport(val smtpServer: String, val bcc: Boolean) {
   def send(recipients: List[String]){
     // Setup the message
     val message = new MimeMessage(Session.getInstance(props, null))
-    message.setFrom(new InternetAddress("support@austindatainc.com"))
+    message.setFrom(new InternetAddress("support@austindata.com"))
 
     recipients foreach (x => {
       // add the recipients
       message.addRecipient(Message.RecipientType.TO, new InternetAddress(x))
     })
     message.setSubject("Austin Data - Fallout Report")
-
+	
+	if (bcc){
+      // BCC Option for QC
+      message.addRecipient(Message.RecipientType.BCC, new InternetAddress("dprice@austindata.com"))
+      message.addRecipient(Message.RecipientType.BCC, new InternetAddress("wwagner@austindata.com"))
+    }
+	
     val multipart = new MimeMultipart
 
     val messageBodyPart = new MimeBodyPart
@@ -39,7 +45,7 @@ class SendReport(val smtpServer: String, val bcc: Boolean) {
   def sendReports(recipients: List[String], attachments: List[File]) {
     // Setup the message
     val message = new MimeMessage(Session.getInstance(props, null))
-    message.setFrom(new InternetAddress("support@austindatainc.com"))
+    message.setFrom(new InternetAddress("support@austindata.com"))
 
     recipients foreach (x => {
       // add the recipients
@@ -49,8 +55,8 @@ class SendReport(val smtpServer: String, val bcc: Boolean) {
 
     if (bcc){
       // BCC Option for QC
-      message.addRecipient(Message.RecipientType.BCC, new InternetAddress("dprice@austindatainc.com"))
-      message.addRecipient(Message.RecipientType.BCC, new InternetAddress("wwagner@austindatainc.com"))
+      message.addRecipient(Message.RecipientType.BCC, new InternetAddress("dprice@austindata.com"))
+      message.addRecipient(Message.RecipientType.BCC, new InternetAddress("wwagner@austindata.com"))
     }
 
     val multipart = new MimeMultipart
