@@ -50,5 +50,4 @@ runner
 
 stax-web.xml
 stax.txt
-*.jar
 *_managed/*

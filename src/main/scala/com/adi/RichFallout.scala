@@ -76,13 +76,12 @@ object RichFallout {
           case "Gracy Title Company" => "GR"
           case "Prosperity Title" => "PR"
           case "Advantage Title" => "AV"
-          case "Austin Data, Inc." => "AD"
           case "Stewart Title" => "SW"
+          case "Graystone Title" => "GS"
           case _ => "COMP"
         }
         // Get the report date
         val date = x.pages.head.substring(124,134).replace("/","").trim
-        // Get the report county
         val pdfReport = new FalloutPDFReport
         val file = new File(comp + "-" + date + ".pdf")
         attachList ::= file
