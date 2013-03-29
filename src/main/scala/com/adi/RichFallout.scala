@@ -1,15 +1,13 @@
 package com.adi
 
-import com.adi.as400.{FalloutSpoolFileReader}
-import com.adi.util.{FalloutPDFReport, SendReport}
-import com.ibm.as400.access.{AS400}
+import com.adi.as400.{ FalloutSpoolFileReader }
+import com.adi.util.{ FalloutPDFReport, SendReport }
+import com.ibm.as400.access.{ AS400 }
 import java.io.File
 import collection.mutable.Map
 
 /**
- * User: dmp
- * Date: 11/10/11
- * Time: 4:53 PM
+ * I need to rewrite this entire program using "data queue" printing and my PDF library
  */
 
 object RichFallout {
@@ -24,7 +22,7 @@ object RichFallout {
   def nextOption(parsedArguments: OptionMap, remainingArguments: List[String]): OptionMap = {
     remainingArguments match {
       case Nil => parsedArguments
-      case "--server" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("server")-> value), tail)
+      case "--server" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("server") -> value), tail)
       case "--user" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("user") -> value), tail)
       case "--password" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("password") -> value), tail)
       case "--smtpserver" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("smtpserver") -> value), tail)
@@ -33,8 +31,8 @@ object RichFallout {
         value), tail)
       case "--userdata" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("userdata") -> value), tail)
       case "--email" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("email") -> value), tail)
-      case "--bcc" :: value :: tail => nextOption(parsedArguments ++Map(Symbol("bcc") -> value.toBoolean), tail)
-      case "--markasprocessed" :: value :: tail => nextOption(parsedArguments ++Map(Symbol("markasprocessed") ->
+      case "--bcc" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("bcc") -> value.toBoolean), tail)
+      case "--markasprocessed" :: value :: tail => nextOption(parsedArguments ++ Map(Symbol("markasprocessed") ->
         value.toBoolean), tail)
       case unknownOption :: tail =>
         sys.error("Unknown Option " + unknownOption)
@@ -44,7 +42,7 @@ object RichFallout {
   }
 
   def main(args: Array[String]) = {
-   println(usage)
+    println(usage)
 
     // Load command line arguments
     val options = nextOption(Map(), args.toList)
@@ -56,23 +54,24 @@ object RichFallout {
     val outq = options.getOrElse(Symbol("outq"), "qprint").asInstanceOf[String]
     val spoolfileUser = options.getOrElse(Symbol("spoolfileuser"), "T2FALLOUT").asInstanceOf[String]
     val userdata = options.getOrElse(Symbol("userdata"), "TM4362CR").asInstanceOf[String]
-    val email = options.getOrElse(Symbol("email"), "").asInstanceOf[String]
+    // Specified e-mail addresses becuase of limitation on OS400 CL parameter length of 255
+    val email = options.getOrElse(Symbol("email"), "dale.johnson@gracytitle.com,terri.tessier@gracytitle.com,donnie.molinare@gracytitle.com").asInstanceOf[String]
     val bcc = options.getOrElse(Symbol("bcc"), true).asInstanceOf[Boolean]
     val markasprocessed = options.getOrElse(Symbol("markasprocessed"), false).asInstanceOf[Boolean]
 
     val recipList = email.split(",").toList
 
-    val as400 = new AS400(server,user,password)
-    try{
+    val as400 = new AS400(server, user, password)
+    try {
       val spoolFileReader = new FalloutSpoolFileReader(as400, spoolfileUser, userdata, outq, markasprocessed)
       val spoolFiles = spoolFileReader.getSpoolFiles
 
       // Variable
       var attachList = List[File]()
 
-      spoolFiles foreach(x => {
+      spoolFiles foreach (x => {
         // Get the entire company field of the first page of the report and pattern match to get company code
-        val comp = x.pages.head.substring(28,71).trim match {
+        val comp = x.pages.head.substring(28, 71).trim match {
           case "Gracy Title Company" => "GR"
           case "Prosperity Title" => "PR"
           case "Advantage Title" => "AV"
@@ -81,7 +80,7 @@ object RichFallout {
           case _ => "COMP"
         }
         // Get the report date
-        val date = x.pages.head.substring(124,134).replace("/","").trim
+        val date = x.pages.head.substring(124, 134).replace("/", "").trim
         val pdfReport = new FalloutPDFReport
         val file = new File(comp + "-" + date + ".pdf")
         attachList ::= file
@@ -101,7 +100,7 @@ object RichFallout {
         }
         case true => sendReport.send(recipList)
       }
-    }finally{
+    } finally {
       as400.disconnectAllServices
     }
   }

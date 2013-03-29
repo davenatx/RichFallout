@@ -1,8 +1,8 @@
 package com.adi.util
 
-import javax.mail.{Session, Message, Multipart, Transport}
-import javax.mail.internet.{InternetAddress, MimeMessage, MimeBodyPart, MimeMultipart}
-import javax.activation.{DataSource, FileDataSource, DataHandler}
+import javax.mail.{ Session, Message, Multipart, Transport }
+import javax.mail.internet.{ InternetAddress, MimeMessage, MimeBodyPart, MimeMultipart }
+import javax.activation.{ DataSource, FileDataSource, DataHandler }
 import java.io.File
 /**
  * User: dmp
@@ -14,7 +14,7 @@ class SendReport(val smtpServer: String, val bcc: Boolean) {
   val props = System.getProperties()
   props.put("mail.smtp.host", smtpServer)
 
-  def send(recipients: List[String]){
+  def send(recipients: List[String]) {
     // Setup the message
     val message = new MimeMessage(Session.getInstance(props, null))
     message.setFrom(new InternetAddress("support@austindata.com"))
@@ -24,13 +24,13 @@ class SendReport(val smtpServer: String, val bcc: Boolean) {
       message.addRecipient(Message.RecipientType.TO, new InternetAddress(x))
     })
     message.setSubject("Austin Data - Fallout Report")
-	
-	if (bcc){
+
+    if (bcc) {
       // BCC Option for QC
       message.addRecipient(Message.RecipientType.BCC, new InternetAddress("dprice@austindata.com"))
       message.addRecipient(Message.RecipientType.BCC, new InternetAddress("wwagner@austindata.com"))
     }
-	
+
     val multipart = new MimeMultipart
 
     val messageBodyPart = new MimeBodyPart
@@ -53,7 +53,7 @@ class SendReport(val smtpServer: String, val bcc: Boolean) {
     })
     message.setSubject("Austin Data - Fallout Report")
 
-    if (bcc){
+    if (bcc) {
       // BCC Option for QC
       message.addRecipient(Message.RecipientType.BCC, new InternetAddress("dprice@austindata.com"))
       message.addRecipient(Message.RecipientType.BCC, new InternetAddress("wwagner@austindata.com"))

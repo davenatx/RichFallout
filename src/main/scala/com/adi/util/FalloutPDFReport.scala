@@ -1,8 +1,7 @@
 package com.adi.util
 
-import com.lowagie.text.{Document, Paragraph, PageSize, Font, FontFactory}
-import com.lowagie.text.pdf.{PdfWriter, BaseFont}
-
+import com.lowagie.text.{ Document, Paragraph, PageSize, Font, FontFactory }
+import com.lowagie.text.pdf.{ PdfWriter, BaseFont }
 
 /**
  * User: dmp
@@ -16,12 +15,11 @@ object FalloutPDFReport {
     var fontPath = ""
     val fontURIPath = this.getClass().getClassLoader.getResource("lucon.ttf").toURI
     // Production where path is to jar containing a !
-    if (fontURIPath.toString.contains("!")){
+    if (fontURIPath.toString.contains("!")) {
       val pos = fontURIPath.toString.indexOf("!") + 1
       fontPath = fontURIPath.toString.substring(pos)
-    }
-    // Development on the file system
-    else{
+    } // Development on the file system
+    else {
       fontPath = fontURIPath.getPath
     }
     fontPath
@@ -49,11 +47,11 @@ class FalloutPDFReport {
     document.open()
   }
 
-  def createReport(pages: List[String]){
+  def createReport(pages: List[String]) {
 
-    val font = new Font(BaseFont.createFont(FalloutPDFReport.fontFilePath, BaseFont.WINANSI, BaseFont.EMBEDDED),10)
+    val font = new Font(BaseFont.createFont(FalloutPDFReport.fontFilePath, BaseFont.WINANSI, BaseFont.EMBEDDED), 10)
 
-    pages.foreach( x => {
+    pages.foreach(x => {
       val p = new Paragraph()
       p.setFont(font)
       p.setLeading(10f) //Sets the line spacing

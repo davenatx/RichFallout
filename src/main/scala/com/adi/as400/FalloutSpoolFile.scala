@@ -6,7 +6,6 @@ import com.ibm.as400.access.PrintObjectList._
 import collection.JavaConversions._
 import com.adi.util.SendReport
 
-
 /**
  * User: dmp
  * Date: 10/31/11
@@ -41,7 +40,7 @@ object FalloutSpoolFileReader {
  * Reads fallout spooled files filtered by the user, outq, and user data.
  */
 class FalloutSpoolFileReader(val as400: AS400, val spoolfileUser: String, val userdata: String, val outq: String,
-                             val markasprocessed: Boolean) {
+    val markasprocessed: Boolean) {
 
   def getSpoolFiles: List[SpoolFile] = {
     // Create list of spooled files
@@ -55,7 +54,7 @@ class FalloutSpoolFileReader(val as400: AS400, val spoolfileUser: String, val us
 
       // Use collection.JavaConversions.enumerationAsScalaIterator to cast untyped Java Enumeration from JT400 to
       // Scala Iterator[SpooledFile]
-      val splFiles: Iterator[SpooledFile]  = splfList.getObjects.asInstanceOf[java.util.Enumeration[SpooledFile]]
+      val splFiles: Iterator[SpooledFile] = splfList.getObjects.asInstanceOf[java.util.Enumeration[SpooledFile]]
 
       // Return list of spool file entries
       splFiles.map(spooledFile => readSpooledFile(spooledFile)).toList
@@ -75,7 +74,7 @@ class FalloutSpoolFileReader(val as400: AS400, val spoolfileUser: String, val us
       builder.append(new String(buffer, 0, x))
     })
 
-    if (markasprocessed){
+    if (markasprocessed) {
       // Place spooled file on hold and set user data to indicate it has been processed
       spooledFile.hold("*IMMED")
       spooledFile.setAttributes(FalloutSpoolFileReader.afterProcessingPrintParam)
@@ -85,8 +84,4 @@ class FalloutSpoolFileReader(val as400: AS400, val spoolfileUser: String, val us
     SpoolFile(builder.toString.split("\f").toList)
   }
 }
-
-
-
-
 
